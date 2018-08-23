@@ -18,7 +18,6 @@ INLINE unsigned long murmur3_64(const unsigned char *data, const int len);
 INLINE unsigned int murmur3_32(const unsigned char *data, const int len);
 
 
-
 /*
   Name:      CRC-32/zlib
   Poly:      0x4C11DB7 (reversed 0xEDB88320) (X^32+X^26+X^23+X^22+X^16+X^12+X^11+X^10+X^8+X^7+X^5+X^4+X^2+X^1+X^0)

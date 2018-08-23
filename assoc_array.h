@@ -24,7 +24,6 @@ typedef struct htable {
 //functions declaration
 INLINE htable *init_array(unsigned int power_of_two_size);
 
-
 INLINE unsigned long array_get(htable *htable, unsigned char *key, unsigned int len);
 
 INLINE list *array_set(htable *htable, unsigned char *key, unsigned int len, unsigned long value);
@@ -65,11 +64,11 @@ inline bool array_remove(htable *htable, unsigned char *key, unsigned int len) {
     unsigned int key_idx = (hashphp(key, len) & (htable->size - 1));
 
     if (htable->table[key_idx] != NULL) {
-        --htable->elements;
         switch(list_remove(htable->table[key_idx], key, len)) {
             case 0: //0 means there is no linked list elements left
                 htable->table[key_idx] = NULL; /* fallthrough... */
             default:
+                --htable->elements;
                 return true;
         }
     } else {
@@ -84,6 +83,8 @@ inline htable *init_array(unsigned int power_of_two_size) {
     htbl->size = 2 << power_of_two_size - 1;
     htbl->halfsize = 2 << (power_of_two_size - 2);
     htbl->quartersize = 2 << (power_of_two_size - 3);
+    htbl->collisions = 0;
+    htbl->elements = 0;
     htbl->table = table;
     return htbl;
 }

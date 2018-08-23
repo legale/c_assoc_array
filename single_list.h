@@ -33,7 +33,7 @@ INLINE list *list_push(list *lst, unsigned char *key, unsigned int len, unsigned
 
 INLINE list_node *list_get(list *lst, unsigned char *key, unsigned int len);
 
-INLINE bool list_remove(list *lst, unsigned char *key, unsigned int len);
+INLINE int list_remove(list *lst, unsigned char *key, unsigned int len);
 
 INLINE list_node *list_nodes_traverse(list_node *parent, list_node *node, unsigned char *key, unsigned int len);
 
@@ -117,7 +117,7 @@ inline list_node *list_get(list *lst, unsigned char *key, unsigned int len) {
 
 
 //remove list element by the key and key length
-inline bool list_remove(list *lst, unsigned char *key, unsigned int len) {
+inline int list_remove(list *lst, unsigned char *key, unsigned int len) {
     if (memcmp(lst->head->key, key, len) == 0) {
         if (lst->head == lst->tail) { //if head = tail
             free(lst->head->key); //free key memory
@@ -126,6 +126,7 @@ inline bool list_remove(list *lst, unsigned char *key, unsigned int len) {
             lst->head = NULL; //set list pointer to NULL
             free(lst); //free list pointer
             lst = NULL; //set list pointer to NULL
+            return 0;
         } else {
             list_node *next = lst->head->next;
             free(lst->head->key);
@@ -133,9 +134,8 @@ inline bool list_remove(list *lst, unsigned char *key, unsigned int len) {
             free(lst->head);
             lst->head = NULL; //set list pointer to NULL
             lst->head = next;
-            --lst->elements;
+            return --lst->elements;
         }
-        return true;
     }
 
     list_node *parent = list_nodes_traverse(NULL, lst->head, key, len);
