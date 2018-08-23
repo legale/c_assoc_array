@@ -5,6 +5,7 @@
 #include "inline.h"    //INLINE constant
 
 
+
 //functions declaration
 INLINE unsigned int crc32(unsigned char *msg);
 

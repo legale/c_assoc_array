@@ -24,6 +24,7 @@ typedef struct htable {
 //functions declaration
 INLINE htable *init_array(unsigned int power_of_two_size);
 
+
 INLINE unsigned long array_get(htable *htable, unsigned char *key, unsigned int len);
 
 INLINE list *array_set(htable *htable, unsigned char *key, unsigned int len, unsigned long value);
@@ -31,10 +32,11 @@ INLINE list *array_set(htable *htable, unsigned char *key, unsigned int len, uns
 INLINE bool array_remove(htable *htable, unsigned char *key, unsigned int len);
 
 
-//functions initialization
-inline unsigned long array_get(htable *htable, unsigned char *key, unsigned int len) {
 
-    unsigned int key_idx = (murmur3_32(key, len) & (htable->halfsize - 1)) + (hashphp(key, len) & (htable->halfsize - 1));
+//functions initialization
+
+inline unsigned long array_get(htable *htable, unsigned char *key, unsigned int len) {
+    unsigned int key_idx = (hashphp(key, len) & (htable->size - 1));
 
     if (htable->table[key_idx] != NULL) {
         list_node *node = list_get(htable->table[key_idx], key, len);
@@ -45,7 +47,7 @@ inline unsigned long array_get(htable *htable, unsigned char *key, unsigned int 
 
 
 inline list *array_set(htable *htable, unsigned char *key, unsigned int len, unsigned long value) {
-    unsigned int key_idx = (murmur3_32(key, len) & (htable->halfsize - 1)) + (hashphp(key, len) & (htable->halfsize - 1));
+    unsigned int key_idx = (hashphp(key, len) & (htable->size - 1));
 
     if (htable->table[key_idx] == NULL) {
         htable->table[key_idx] = list_push(NULL, key, len, value);
@@ -60,10 +62,16 @@ inline list *array_set(htable *htable, unsigned char *key, unsigned int len, uns
 
 
 inline bool array_remove(htable *htable, unsigned char *key, unsigned int len) {
-    unsigned int key_idx = (murmur3_32(key, len) & (htable->halfsize - 1)) + (hashphp(key, len) & (htable->halfsize - 1));
+    unsigned int key_idx = (hashphp(key, len) & (htable->size - 1));
+
     if (htable->table[key_idx] != NULL) {
         --htable->elements;
-        return list_remove(htable->table[key_idx], key, len);
+        switch(list_remove(htable->table[key_idx], key, len)) {
+            case 0: //0 means there is no linked list elements left
+                htable->table[key_idx] = NULL; /* fallthrough... */
+            default:
+                return true;
+        }
     } else {
         return false;
     }

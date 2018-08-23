@@ -44,6 +44,8 @@ int main() {
     list_remove(lst,key4, sizeof(key4));
 
 
+    printf("crc32 hash: 0x%08X\n", crc32("123456789"));
+    printf("crc32_slow hash: 0x%08X\n", crc32_slow("123456789"));
     printf("murmur3_64 mod hash: 0x%016lX\n", murmur3_64(key1, sizeof(key1)));
     printf("murmur3_32 mod hash: 0x%08X\n", murmur3_32(key1, sizeof(key1)));
 
