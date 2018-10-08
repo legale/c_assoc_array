@@ -1,3 +1,7 @@
+/*
+ * Single linked list structure v0.2
+ */
+
 #ifndef _ASSOC_ARRAY
 #define _ASSOC_ARRAY
 
@@ -78,7 +82,7 @@ inline bool array_remove(htable *htable, unsigned char *key, unsigned int len) {
 
 inline htable *init_array(unsigned int power_of_two_size) {
     htable *htbl = (htable *) malloc(sizeof(htable));
-    list **table = (list **) malloc(sizeof(size_t) * (2 << power_of_two_size));
+    list **table = (list **) calloc(1, sizeof(size_t) * (2 << power_of_two_size)); //alloc with zeroes
 
     htbl->size = 2 << power_of_two_size - 1;
     htbl->halfsize = 2 << (power_of_two_size - 2);
