@@ -61,7 +61,7 @@ inline list *list_unshift(list *lst, unsigned char *key, unsigned int len, unsig
     unsigned char *key_allocated = (unsigned char *) malloc(len);
     memcpy(key_allocated, key, len);
 
-    list_node *new = (list_node *) malloc(sizeof(list)); //allocate memory for the new element
+    list_node *new = (list_node *) malloc(sizeof(list_node)); //allocate memory for the new element
     new->value = value;
     new->key = key_allocated;
     new->next = NULL;
@@ -87,7 +87,7 @@ inline list *list_push(list *lst, unsigned char *key, unsigned int len, unsigned
     unsigned char *key_allocated = (unsigned char *) malloc(len);
     memcpy(key_allocated, key, len);
 
-    list_node *new = (list_node *) malloc(sizeof(list)); //allocate memory for the new element
+    list_node *new = (list_node *) malloc(sizeof(list_node)); //allocate memory for the new element
     new->key = key_allocated;
     new->value = value;
     new->next = NULL;
