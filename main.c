@@ -29,13 +29,17 @@ int main() {
 
 
 
-    list *lst = list_push(NULL, key1, sizeof(key1), 1);
+    list *lst = list_push(NULL, key1, sizeof(key1), 123456);
     list_push(lst, key2, sizeof(key2), 2);
     list_push(lst, key3, sizeof(key3), 3);
     list_push(lst, key4, sizeof(key4), 4);
     list_unshift(lst, key5, sizeof(key5), 11);
 
     list_node *get = list_get(lst, key1, 5);
+    list_node *get_shift = list_shift(lst);
+    printf("key: %s value: %i \n", key1, get->value);
+    printf("key shift: %s value: %i \n", get_shift->key, get_shift->value);
+
 
     list_remove(lst,key1, sizeof(key1));
     list_remove(lst,key5, sizeof(key5));
